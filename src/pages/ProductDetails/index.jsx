@@ -1,9 +1,12 @@
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { mockProducts } from '../../mocks/products'
 import { formatCurrency } from '../../utils/formatCurrency'
+import { useCart } from '../../contexts/CartContext'
 
 function ProductDetails() {
   const { productId } = useParams()
+  const navigate = useNavigate()
+  const { addItem } = useCart()
 
   // TODO: substituir por chamada real à API (GET /products/:id) na etapa de integração.
   const product = mockProducts.find((p) => String(p.id) === productId)
@@ -48,6 +51,10 @@ function ProductDetails() {
 
       <button
         type="button"
+        onClick={() => {
+          addItem(product, 1)
+          navigate('/cart')
+        }}
         className="mt-4 w-full rounded bg-blue-600 py-2 text-sm font-semibold text-white hover:bg-blue-700"
       >
         Comprar

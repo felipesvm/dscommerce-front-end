@@ -1,9 +1,25 @@
 import { LogOut, Settings, ShoppingCart } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useCart } from '../../contexts/CartContext'
 
 // TODO: substituir por dados reais quando o Contexto de Autenticação (Etapa de Login) for criado.
 const isAuthenticated = false
 const loggedUserEmail = 'alex@gmail.com'
+
+function CartIcon() {
+  const { totalItems } = useCart()
+
+  return (
+    <Link to="/cart" title="Carrinho" className="relative">
+      <ShoppingCart size={20} className="text-gray-800" />
+      {totalItems > 0 && (
+        <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">
+          {totalItems}
+        </span>
+      )}
+    </Link>
+  )
+}
 
 function StoreNavbar() {
   return (
@@ -18,9 +34,7 @@ function StoreNavbar() {
             <Link to="/admin" title="Configurações">
               <Settings size={20} className="text-gray-800" />
             </Link>
-            <Link to="/cart" title="Carrinho">
-              <ShoppingCart size={20} className="text-gray-800" />
-            </Link>
+            <CartIcon />
             <div className="flex flex-col items-end leading-tight">
               <span className="text-xs text-gray-800">{loggedUserEmail}</span>
               <button
@@ -33,9 +47,7 @@ function StoreNavbar() {
           </>
         ) : (
           <>
-            <Link to="/cart" title="Carrinho">
-              <ShoppingCart size={20} className="text-gray-800" />
-            </Link>
+            <CartIcon />
             <Link to="/login" className="text-sm font-semibold text-gray-800">
               Entrar
             </Link>
